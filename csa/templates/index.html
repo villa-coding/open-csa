@@ -1,11 +1,14 @@
-{% extends 'layouts/base.html' %}
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}This is an example page{% endblock %}
 
-{% set page_title = 'Home' %}
-
-{% block body %}
-<div class="jumbotron">
-    <h1>Flask Bone</h1>
-    <p>Fbone (Flask bone) is a Flask template/bootstrap/boilerplate application.</p>
-    <p><a role="button" href="{{ url_for('frontend.signup')}}" class="btn btn-lg btn-primary"><strong>Sign up »</strong></a></p>
+{% block navbar %}
+<div class="navbar navbar-fixed-top">
+  <!-- ... -->
 </div>
+{% endblock %}
+
+{% block content %}
+  <h1>Hello, Bootstrap</h1>
+{{ wtf.quick_form(form) }}
 {% endblock %}
