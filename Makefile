@@ -1,4 +1,5 @@
 SOURCE_FOLDERS = csa
+FIXTURES=users
 
 .PHONY: deps
 
@@ -15,13 +16,11 @@ venv:
 test:
 	. venv/bin/activate && python -m unittest -v ${TEST_ARGS}
 
-db-init:
-	. venv/bin/activate && \
-	    python -c 'from csa.app import db; db.create_all()'
-
-db-clean:
-	. venv/bin/activate && \
-	    python -c 'from csa.app import db; db.drop_all()'
+db-reset:
+	. venv/bin/activate && ./manage.py flush --no-input
+	. venv/bin/activate && ./manage.py makemigrations --no-input
+	. venv/bin/activate && ./manage.py migrate --no-input
+	. venv/bin/activate && ./manage.py loaddata ${FIXTURES}
 
 pep8:
 	. venv/bin/activate && pep8 ${SOURCE_FOLDERS}
