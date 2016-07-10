@@ -16,6 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+import csa.views
+import csa.views.access
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', csa.views.index, name='index'),
+    url(r'^user/login/', csa.views.access.user_login, name='user-login'),
+    url(r'^user/logout/', csa.views.access.user_logout, name='user-logout')
 ]

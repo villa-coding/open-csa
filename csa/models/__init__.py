@@ -1,12 +1,9 @@
-from django.db import models
+# import models to get them registered
+import csa.models.core
 
+from django.contrib import admin
+from django.apps import apps
 
-class Question(models.Model):
-    question_text = models.CharField(max_length=200)
-    pub_date = models.DateTimeField('date published')
-
-
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200)
-    votes = models.IntegerField(default=0)
+app = apps.get_app_config('csa')
+for model_name, model in app.models.items():
+    admin.site.register(model)
