@@ -1,5 +1,5 @@
-SOURCE_FOLDERS = csa
-FIXTURES=users
+SOURCE_FOLDERS=csa
+FIXTURES=users product-categories
 
 .PHONY: deps
 
@@ -18,8 +18,8 @@ test:
 
 db-reset:
 	. venv/bin/activate && ./manage.py flush --no-input
-	. venv/bin/activate && ./manage.py makemigrations --no-input
-	. venv/bin/activate && ./manage.py migrate --no-input
+	. venv/bin/activate && ./manage.py makemigrations --no-input csa
+	. venv/bin/activate && ./manage.py migrate --no-input csa
 	. venv/bin/activate && ./manage.py loaddata ${FIXTURES}
 
 pep8:
