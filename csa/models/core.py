@@ -8,10 +8,6 @@ from django.contrib.auth.models import User
 CSACharField = partial(models.CharField, max_length=512)
 
 
-class Product(models.Model):
-    pass
-
-
 class ProductCategory(models.Model):
     # set proper plural name
     class Meta:
@@ -25,8 +21,16 @@ class ProductCategory(models.Model):
         return self.name
 
 
-class Order(models.Model):
-    pass
+class ProductMeasureUnit(models.Model):
+    name = CSACharField()
+
+
+# TODO: how to handle varieties in terms of container size?
+class Product(models.Model):
+    categories = models.ManyToManyField(ProductCategory)
+    name = CSACharField()
+    description = models.TextField()
+    unit = models.ForeignKey(ProductMeasureUnit)
 
 
 class UserProfile(models.Model):
@@ -38,5 +42,32 @@ class Producer(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
 
 
+# TODO: keep log of these for stats of price changes
+class ProductStock(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    producer = models.OneToOneField(Producer, on_delete=models.CASCADE)
+    # TODO: add non-negative validator
+    quantity = models.IntegerField()
+    price = models.IntegerField()
+    # extra description for specific product from producer
+    description = models.TextField()
+
+
+class Order(models.Model):
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class OrderItem(models.Model):
+    # TODO: on_delete what?
+    product = models.ForeignKey(Product)
+    quantity = models.FloatField()
+    order = models.ForeignKey(Order, related_name='items')
+
+
+
 class Consumer(models.Model):
     user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    # TODO: on_delete what?
+    order = models.OneToOneField(Order)
