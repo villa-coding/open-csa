@@ -1,0 +1,9 @@
+- model: csa.ProductCategory
+  pk: 1
+  fields:
+    name: Λαχανικά
+- model: csa.ProductCategory
+  pk: 2
+  fields:
+    name: Ντομάτες
+    parent: 1
