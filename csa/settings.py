@@ -128,3 +128,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_PROFILE_MODULE = 'csa.models.UserProfile'
+# how long to let user activate his account
+ACCOUNT_ACTIVATION_DAYS = 7
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
+PHONENUMBER_DEFAULT_REGION = 'GR'

@@ -1,5 +1,7 @@
 django
 django-bootstrap3
+django-registration
+django-phonenumber-field
 
 # for fixtures
 pyyaml

@@ -2,15 +2,15 @@
 
 {% load bootstrap3 %}
 
-{% block title %}Ω γης τ' αλλού (... της δικιάς σου){% endblock %}
-
 {% block content %}
 {% if user.is_authenticated %}
-<p>Welcome, {{ user.email }}! <a href="/user/logout/">logout</a></p>
+<p>Welcome, {{ user.email }}! <a href="{% url 'user-logout' %}">logout</a></p>
+<p><a href="{% url 'product-add' %}">Add Product</p>
 {% else %}
-<form action="/user/login/" method="post" class="form">
+<a href="{% url 'user-register' %}">Sign Up</a>
+<form action="{% url 'user-login' %}" method="post" class="form form-horizontal">
   {% csrf_token %}
-  {% bootstrap_form login_form %}
+  {% bootstrap_form login_form layout='horizontal' %}
   {% buttons %}
     <button type="submit" class="btn btn-primary">
       {% bootstrap_icon "star" %} Submit

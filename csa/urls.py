@@ -13,15 +13,27 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+
+from registration.backends.hmac.views import RegistrationView
 
 import csa.views
 import csa.views.access
+import csa.views.products
+import csa.forms.access
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', csa.views.index, name='index'),
     url(r'^user/login/', csa.views.access.user_login, name='user-login'),
-    url(r'^user/logout/', csa.views.access.user_logout, name='user-logout')
+    url(r'^user/logout/', csa.views.access.user_logout, name='user-logout'),
+    url(r'^user/register/$',
+        RegistrationView.as_view(
+            form_class=csa.forms.access.RegistrationForm
+        ),
+        name='user-register',
+    ),
+    url(r'^user/', include('registration.backends.hmac.urls')),
+    url(r'^product/add', csa.views.products.add_product, name='product-add')
 ]

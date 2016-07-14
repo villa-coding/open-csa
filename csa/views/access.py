@@ -3,6 +3,10 @@ from django.shortcuts import redirect
 from django.contrib import messages
 
 
+def user_signup(request):
+    pass
+
+
 def user_login(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -13,7 +17,8 @@ def user_login(request):
             messages.success(request, 'Επιτυχής σύνδεση')
         else:
             # TODO: how to handle this?
-            raise Exception()
+            messages.error(request, 'Επιβεβαιώστε πρώτα το λογαργιασμό σας')
+            return redirect('index')
 
         return redirect('index')
     else:
