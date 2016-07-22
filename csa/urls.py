@@ -29,7 +29,6 @@ urlpatterns = [
         csa.views.admin.user.deposit_by_hand,
         name='admin-user-deposit-by-hand'),
     url(r'^$', csa.views.index, name='index'),
-    url(r'^user/logout/', csa.views.access.user_logout, name='user-logout'),
     url(r'^user/register/$',
         RegistrationView.as_view(
             form_class=csa.forms.access.RegistrationForm
