@@ -1,4 +1,4 @@
-# admin/csapassword
+# all passwords are p4ssw0rd
 - model: auth.user
   pk: 1
   fields:
