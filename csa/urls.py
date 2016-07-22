@@ -19,7 +19,6 @@ from django.contrib import admin
 from registration.backends.hmac.views import RegistrationView
 
 import csa.views
-import csa.views.access
 import csa.forms.access
 import csa.views.admin.user
 

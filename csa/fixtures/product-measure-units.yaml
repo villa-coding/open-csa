@@ -1,8 +1,0 @@
-- model: csa.ProductMeasureUnit
-  pk: 1
-  fields:
-    name: κιλό
-- model: csa.ProductMeasureUnit
-  pk: 2
-  fields:
-    name: μάτσο

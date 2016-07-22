@@ -17,11 +17,7 @@ test:
 	. venv/bin/activate && python -m unittest -v ${TEST_ARGS}
 
 db-reset:
-	. venv/bin/activate && ./manage.py flush --no-input
-	. venv/bin/activate && ./manage.py makemigrations --no-input
-	. venv/bin/activate && ./manage.py makemigrations --no-input csa
-	. venv/bin/activate && ./manage.py migrate --no-input
-	. venv/bin/activate && ./manage.py loaddata ${FIXTURES}
+	. venv/bin/activate && ./bin/db-setup.py --drop --init --test-data
 
 pep8:
 	. venv/bin/activate && pep8 ${SOURCE_FOLDERS}
