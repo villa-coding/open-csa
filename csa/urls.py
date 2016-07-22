@@ -20,13 +20,15 @@ from registration.backends.hmac.views import RegistrationView
 
 import csa.views
 import csa.views.access
-import csa.views.products
 import csa.forms.access
+import csa.views.admin.user
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^admin/users/(?P<user_id>\d+)/deposit_by_hand',
+        csa.views.admin.user.deposit_by_hand,
+        name='admin-user-deposit-by-hand'),
     url(r'^$', csa.views.index, name='index'),
-    url(r'^user/login/', csa.views.access.user_login, name='user-login'),
     url(r'^user/logout/', csa.views.access.user_logout, name='user-logout'),
     url(r'^user/register/$',
         RegistrationView.as_view(
@@ -34,6 +36,5 @@ urlpatterns = [
         ),
         name='user-register',
     ),
-    url(r'^user/', include('registration.backends.hmac.urls')),
-    url(r'^product/add', csa.views.products.add_product, name='product-add')
+    url(r'^user/', include('registration.backends.hmac.urls'))
 ]

@@ -6,6 +6,6 @@
 <form class="form form-horizontal" action="{% url 'user-register' %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form layout='horizontal' %}
-    <input type="submit" value="Submit" />
+    {% buttons submit='Εγγραφή' %}{% endbuttons %}
 </form>
 {% endblock %}

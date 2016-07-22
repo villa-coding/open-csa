@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # third party
     'bootstrap3',
+    'related_admin',
 
     # our own
     'csa'
@@ -111,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'el-gr'
 
 TIME_ZONE = 'UTC'
 

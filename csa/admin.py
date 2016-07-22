@@ -1,13 +1,16 @@
 from django.contrib import admin
-from django.apps import apps
 from django.contrib.auth.admin import UserAdmin
+from django.shortcuts import redirect
+from django import forms
+from related_admin import RelatedFieldAdmin as ModelAdmin
 from csa.models.user import User, UserProfile
+from csa.finance.payments import get_user_balance
+import csa.models
 
 
-# register all models
-app = apps.get_app_config('csa')
-for model_name, model in app.models.items():
-    admin.site.register(model)
+admin.site.site_header = 'CSA Administration'
+admin.site.index_title = 'Features'
+admin.site.site_title = 'CSA Administration'
 
 
 class UserProfileInline(admin.StackedInline):
@@ -19,3 +22,41 @@ class UserProfileAdmin(UserAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserProfileAdmin)
+
+
+@admin.register(csa.models.core.Product)
+class ProductAdmin(ModelAdmin):
+    list_display = ('name', 'description', 'unit')
+
+
+@admin.register(csa.models.core.ProductStock)
+class ProductStockAdmin(ModelAdmin):
+    list_display = ('product', 'producer', 'quantity', 'price')
+
+
+@admin.register(csa.models.core.Producer)
+class Producer(ModelAdmin):
+    inlines = [UserProfileInline]
+    list_display = (
+        'profile__user__username',
+        'profile__phone_number',
+        'profile__user__email')
+
+@admin.register(csa.models.core.Consumer)
+class Consumer(ModelAdmin):
+    inlines = [UserProfileInline]
+    actions = ['deposit_by_hand']
+    list_display = (
+        'profile__user__username',
+        'profile__phone_number',
+        'profile__user__email',
+        'balance')
+
+    class DepositByHandForm(forms.Form):
+        ammount = forms.FloatField()
+
+    def deposit_by_hand(self, request, queryset):
+        return redirect('admin-user-deposit-by-hand', 1)
+
+    def balance(self, consumer):
+        return get_user_balance(consumer.profile.user)

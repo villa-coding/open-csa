@@ -1,0 +1,30 @@
+- model: auth.user
+  pk: 1
+  fields:
+    password: pbkdf2_sha256$24000$AG9LOxE50VvE$eWGDxVll13CgAPWrx85oDKgYMYQmRGKcm0EQy01tL8k=
+    last_login: 2016-07-22 14:33:20.618604+00:00
+    is_superuser: true
+    username: admin
+    first_name: CSA
+    last_name: Administrator
+    email: admin@csa.tolabaki.gr
+    is_staff: true
+    is_active: true
+    date_joined: 2016-07-10 20:30:54.002467+00:00
+    groups: []
+    user_permissions: []
+- model: auth.user
+  pk: 2
+  fields:
+    password: pbkdf2_sha256$24000$DFkYBrS0br79$OjSBoVgfuZY9Q4NaHJlBABP+ewA81jC2oo2x9vqBbUc=
+    last_login: null
+    is_superuser: false
+    username: consumer
+    first_name: "\u0393\u03B9\u03AC\u03BD\u03BD\u03B7\u03C2"
+    last_name: "\u03A3\u03BF\u03C5\u03C0\u03B5\u03C1\u03BC\u03B1\u03C1\u03BA\u03B5\u03C4\u03AC\u03BA\u03B7\u03C2"
+    email: consumer@example.com
+    is_staff: false
+    is_active: true
+    date_joined: 2016-07-22 14:34:26+00:00
+    groups: []
+    user_permissions: []

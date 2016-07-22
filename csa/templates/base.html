@@ -2,12 +2,53 @@
 {% load bootstrap3 %}
 
 {% block bootstrap3_title %}
-{% block title %}Ω γης τ' αλλού (... της δικιάς σου){% endblock %}
+{% block title %}CSA - Κοινωτικά Υποστηριζόμενη Γεωργία{% endblock %}
 {% endblock %}
 
 {% block bootstrap3_content %}
-    <div class="container">
-        {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
-        {% block content %}{% endblock %}
+<nav class="navbar navbar-default navbar-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{% url 'index' %}">CSA</a>
     </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'index' %}">Αρχική</a></li>
+        {% if user.is_authenticated %}
+	<li><a href="#">Παραγγελία της εβδομάδας</a></li>
+	{% endif %}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+	{% if user.is_authenticated %}
+	<li class="dropdown">
+	  <a href="#"
+	     class="dropdown-toggle"
+	     data-toggle="dropdown"
+	     role="button"
+	     aria-haspopup="true"
+	     aria-expanded="false">
+	    {{ user.get_full_name }} <span class="caret"></span>
+	  </a>
+	  <ul class="dropdown-menu">
+	    <li><a href="{% url 'user-logout' %}">Αποσύνδεση</a></li>
+	  </ul>
+	</li>
+	{% else %}
+	<li><a href="{% url 'user-register' %}">Εγγραφή</a></li>
+	<li><a href="{% url 'auth_login' %}">Σύνδεση</a></li>
+	{% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  {% autoescape off %}{% bootstrap_messages %}{% endautoescape %}
+  {% block content %}{% endblock %}
+</div>
 {% endblock %}

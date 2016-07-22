@@ -1,4 +1,3 @@
-from functools import partial
 from django.db import models
 from csa.models.user import Producer, Consumer
 from csa.models.utils import CSACharField
@@ -20,6 +19,9 @@ class ProductCategory(models.Model):
 class ProductMeasureUnit(models.Model):
     name = CSACharField()
 
+    def __str__(self):
+        return self.name
+
 
 # TODO: how to handle varieties in terms of container size?
 class Product(models.Model):
@@ -28,10 +30,13 @@ class Product(models.Model):
     description = models.TextField()
     unit = models.ForeignKey(ProductMeasureUnit)
 
+    def __str__(self):
+        return self.name
+
 
 # TODO: keep log of these for stats of price changes
 class ProductStock(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.OneToOneField(Product, on_delete=models.CASCADE)
     producer = models.OneToOneField(Producer, on_delete=models.CASCADE)
     # TODO: add non-negative validator
     quantity = models.IntegerField()

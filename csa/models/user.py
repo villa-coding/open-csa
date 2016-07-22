@@ -1,23 +1,43 @@
 from django.db import models
 from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
-from csa.models.utils import CSACharField
 from registration.signals import user_registered
+
+
+class Producer(models.Model):
+    pass
+
+    def __str__(self):
+        return self.profile.user.username
+
+
+class Consumer(models.Model):
+    pass
+
+    def __str__(self):
+        return self.profile.user.username
 
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = CSACharField()
-    last_name = CSACharField()
     phone_number = PhoneNumberField()
 
+    producer = models.OneToOneField(
+        Producer,
+        on_delete=models.CASCADE,
+        related_name='profile',
+        blank=True,
+        null=True)
 
-class Producer(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    consumer = models.OneToOneField(
+        Consumer,
+        on_delete=models.CASCADE,
+        related_name='profile',
+        blank=True,
+        null=True)
 
-
-class Consumer(models.Model):
-    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.user.username
 
 
 def user_registered_callback(sender, user, request, **kwargs):
