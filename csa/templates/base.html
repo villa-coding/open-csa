@@ -1,5 +1,6 @@
 {% extends 'bootstrap3/bootstrap3.html' %}
 {% load bootstrap3 %}
+{% load tags %}
 
 {% block bootstrap3_title %}
 {% block title %}CSA - Κοινωτικά Υποστηριζόμενη Γεωργία{% endblock %}
@@ -19,8 +20,9 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="{% url 'index' %}">Αρχική</a></li>
+        <li class="{% active 'index' %}"><a href="{% url 'index' %}">Αρχική</a></li>
         {% if user.is_authenticated %}
+	<li class="{% active 'products-index' %}"><a href="{% url 'products-index' %}">Προιόντα</a></li>
 	<li><a href="#">Παραγγελία της εβδομάδας</a></li>
 	{% endif %}
       </ul>
@@ -36,6 +38,9 @@
 	    {{ user.get_full_name }} <span class="caret"></span>
 	  </a>
 	  <ul class="dropdown-menu">
+	    {% if user.is_superuser %}
+	    <li><a href="{% url 'admin:index' %}">Διαχείρηση</a></li>
+	    {% endif %}
 	    <li><a href="{% url 'auth_logout' %}?next=/">Αποσύνδεση</a></li>
 	  </ul>
 	</li>

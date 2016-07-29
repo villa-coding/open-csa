@@ -1,5 +1,5 @@
 from django.db import models
-from csa.models.user import Producer, Consumer
+from csa.models.user import Producer, Consumer, User
 from csa.models.utils import CSACharField
 
 
@@ -23,10 +23,10 @@ class ProductMeasureUnit(models.Model):
         return self.name
 
 
-# TODO: how to handle varieties in terms of container size?
+# TODO: how to handle container size?
 class Product(models.Model):
     categories = models.ManyToManyField(ProductCategory)
-    name = CSACharField()
+    name = CSACharField(unique=True)
     description = models.TextField()
     unit = models.ForeignKey(ProductMeasureUnit)
 
@@ -36,11 +36,15 @@ class Product(models.Model):
 
 # TODO: keep log of these for stats of price changes
 class ProductStock(models.Model):
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
-    producer = models.OneToOneField(Producer, on_delete=models.CASCADE)
-    # TODO: add non-negative validator
-    quantity = models.IntegerField()
-    price = models.IntegerField()
+    product = models.ForeignKey(
+        Product,
+        related_name='stocks',
+        on_delete=models.CASCADE)
+
+    producer = models.OneToOneField(User, on_delete=models.CASCADE)
+    variety = CSACharField()
+    quantity = models.PositiveIntegerField()
+    price = models.PositiveIntegerField()
     # extra description for specific product from producer
     description = models.TextField()
 

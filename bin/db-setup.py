@@ -6,17 +6,14 @@ import django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'csa.settings'
 django.setup()
 from csa.models.user import User, UserProfile
-from csa.models.core import ProductCategory, ProductMeasureUnit
+from csa.models.core import ProductCategory, ProductMeasureUnit, Product, ProductStock
 
 
 def test_data():
-    ProductMeasureUnit.objects.bulk_create([
-        ProductMeasureUnit(name='κιλό'),
-        ProductMeasureUnit(name='μάτσο')
-    ])
-
+    unit_kilo = ProductMeasureUnit.objects.create(name='κιλό')
+    unit_matso = ProductMeasureUnit.objects.create(name='μάτσο')
+    category_laxanika = ProductCategory.objects.create(name='Λαχανικά')
     ProductCategory.objects.bulk_create([
-        ProductCategory(name='Λαχανικά'),
         ProductCategory(name='Φρούτα'),
         ProductCategory(name='Μεταποιημένα')
     ])
@@ -26,7 +23,7 @@ def test_data():
         parent=ProductCategory.objects.get(name='Λαχανικά'))
 
     password = 'p4ssw0rd'
-    admin = User.objects.create_user(
+    admin = User.objects.create_superuser(
         username='admin',
         email='csa@example.com',
         password=password,
@@ -53,7 +50,25 @@ def test_data():
         user=producer,
         phone_number='+306976823542')
 
+    aggouri = Product.objects.create(
+        name='Αγγούρι',
+        description='Το αγγούρι είναι καρπός που προέρχεται από το έρπον και '
+        'αναρριχώμενο ετήσιο φυτό της αγγουριάς Cucumis sativus-Σικυός ο '
+        'ήμερος. Ανήκει στην οικογένεια (βιολογία) κολοκυνθοειδών όπως το πεπόνι, '
+        'το καρπούζι, το κολοκύθι. Η αγγουριά καλλιεργείται στην ύπαιθρο τους '
+        'καλοκαιρινούς μήνες και σε θερμοκήπιο τον υπόλοιπο χρόνο, λόγω της '
+        'ευαισθησίας στις χαμηλές θερμοκρασίες. Η υψηλή θερμοκρασία και υγρασία '
+        'ευνοούν την ανάπτυξή της.',
+        unit=unit_kilo)
+    aggouri.categories.add(category_laxanika)
 
+    ProductStock.objects.create(
+        product=aggouri,
+        producer=producer,
+        variety='Κλωσσούδι',
+        description='Τα λεγόμενα αγγουράκια της Βάσως',
+        quantity=10,
+        price=150)
 
 
 

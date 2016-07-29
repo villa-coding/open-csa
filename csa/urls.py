@@ -21,18 +21,22 @@ from registration.backends.hmac.views import RegistrationView
 import csa.views
 import csa.forms.access
 import csa.views.admin.user
+import csa.views.products
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^admin/users/(?P<user_id>\d+)/deposit_by_hand',
         csa.views.admin.user.deposit_by_hand,
         name='admin-user-deposit-by-hand'),
-    url(r'^$', csa.views.index, name='index'),
     url(r'^user/register/$',
         RegistrationView.as_view(
             form_class=csa.forms.access.RegistrationForm
         ),
         name='user-register',
     ),
-    url(r'^user/', include('registration.backends.hmac.urls'))
+    url(r'^user/', include('registration.backends.hmac.urls')),
+
+    url(r'^$', csa.views.index, name='index'),
+    url(r'^products/', csa.views.products.index, name='products-index')
 ]

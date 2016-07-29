@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     # third party
     'bootstrap3',
@@ -136,3 +137,6 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 PHONENUMBER_DEFAULT_REGION = 'GR'
+
+# named-url provided by django_registration
+LOGIN_URL = 'auth_login'

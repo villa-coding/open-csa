@@ -8,9 +8,9 @@ from csa.finance.payments import get_user_balance
 import csa.models
 
 
-admin.site.site_header = 'CSA Administration'
-admin.site.index_title = 'Features'
-admin.site.site_title = 'CSA Administration'
+admin.site.site_header = 'Διαχείρηση CSA'
+admin.site.index_title = 'Λειτουργίες'
+admin.site.site_title = 'Διαχeίρηση CSA'
 
 
 class UserProfileInline(admin.StackedInline):
