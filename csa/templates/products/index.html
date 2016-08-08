@@ -27,7 +27,8 @@
       <td>
 	<form method="post" action="{% url 'cart-add' %}">
 	  {% csrf_token %}
-	  <input type="hidden" name="stock_id" value="{{ stock.id }}">
+	  {{ stock.cart_add_form.quantity }}
+	  {{ stock.cart_add_form.stock_id }}
 	  <input type="submit" value="καλάθι">
 	</form>
       </td>
