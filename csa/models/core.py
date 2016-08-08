@@ -51,45 +51,49 @@ class ProductStock(models.Model):
     description = models.TextField()
 
 
-class Cart(models.Model):
-    user = models.ForeignKey(User)
+class CartAndOrderCommon(models.Model):
+    class Meta:
+        abstract = True
+
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Order(models.Model):
-    # TODO: on_delete what?
+class Cart(CartAndOrderCommon):
+    user = models.OneToOneField(User)
+
+
+class Order(CartAndOrderCommon):
     user = models.ForeignKey(User)
-    comment = models.TextField(blank=True)
+
+
+class CartAndOrderItem(models.Model):
+    class Meta:
+        abstract = True
+
+    product_stock = models.ForeignKey(ProductStock)
+    quantity = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class CartItem(models.Model):
+class CartItem(CartAndOrderItem):
     class Meta:
         # one product per cart, that's why we have quantity
         unique_together = (('product_stock', 'cart'),)
 
-    product_stock = models.ForeignKey(ProductStock)
-    quantity = models.FloatField()
     cart = models.ForeignKey(Cart, related_name='items')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def total_price(self):
         return self.quantity * self.product_stock.price
 
 
-class OrderItem(models.Model):
+class OrderItem(CartAndOrderItem):
     class Meta:
         unique_together = (('product_stock', 'order'),)
 
     # TODO: on_delete what?
     # TODO: product or product stock? crutial logic decision
     # TODO: copy product item details here. this is permanent order
-    product_stock = models.ForeignKey(ProductStock)
-    quantity = models.FloatField()
     order = models.ForeignKey(Order, related_name='items')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
