@@ -1,6 +1,8 @@
 from django.db import models
-from csa.models.user import Producer, Consumer, User
+from csa.models.user import User
 from csa.models.utils import CSACharField
+
+# TODO: split this module into actual pieces
 
 
 class ProductCategory(models.Model):
@@ -49,18 +51,44 @@ class ProductStock(models.Model):
     description = models.TextField()
 
 
-class Order(models.Model):
-    # TODO: on_delete what?
-    consumer = models.OneToOneField(Consumer)
+class Cart(models.Model):
+    user = models.ForeignKey(User)
     comment = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
+class Order(models.Model):
+    # TODO: on_delete what?
+    user = models.ForeignKey(User)
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class CartItem(models.Model):
+    class Meta:
+        # one product per cart, that's why we have quantity
+        unique_together = (('product_stock', 'cart'),)
+
+    product_stock = models.ForeignKey(ProductStock)
+    quantity = models.FloatField()
+    cart = models.ForeignKey(Cart, related_name='items')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def total_price(self):
+        return self.quantity * self.product_stock.price
+
+
 class OrderItem(models.Model):
+    class Meta:
+        unique_together = (('product_stock', 'order'),)
+
     # TODO: on_delete what?
     # TODO: product or product stock? crutial logic decision
-    product = models.ForeignKey(Product)
+    # TODO: copy product item details here. this is permanent order
+    product_stock = models.ForeignKey(ProductStock)
     quantity = models.FloatField()
     order = models.ForeignKey(Order, related_name='items')
     created_at = models.DateTimeField(auto_now_add=True)

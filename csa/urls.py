@@ -22,6 +22,7 @@ import csa.views
 import csa.forms.access
 import csa.views.admin.user
 import csa.views.products
+import csa.views.cart
 
 
 urlpatterns = [
@@ -38,5 +39,7 @@ urlpatterns = [
     url(r'^user/', include('registration.backends.hmac.urls')),
 
     url(r'^$', csa.views.index, name='index'),
-    url(r'^products/', csa.views.products.index, name='products-index')
+    url(r'^products/$', csa.views.products.index, name='products-index'),
+    url(r'^user/cart/$', csa.views.cart.index, name='cart-index'),
+    url(r'^user/cart/add', csa.views.cart.add, name='cart-add')
 ]

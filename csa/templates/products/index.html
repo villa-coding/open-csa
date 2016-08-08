@@ -3,32 +3,38 @@
 {% load tags %}
 
 {% block content %}
-  <h2>Λίστα Προϊόντων</h2>
+<h2>Λίστα Προϊόντων</h2>
 
-  {% for product in products %}
-    <div class="row">
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.description }}</p>
-      <table class="table table-striped">
-	<thead>
-	  <tr>
-	    <th>Παραγωγός</th>
-	    <th>Ποικιλία</th>
-	    <th>Περιγραφή</th>
-	    <th>Τιμή ανά {{ product.unit.name }}</th>
-	</thead>
-	<tbody>
-	  {% for stock in product.stocks.all %}
-	    <tr>
-	      <td>{{ stock.producer.get_full_name }}</td>
-	      <td>{{ stock.variety }}</td>
-	      <td>{{ stock.description }}</td>
-	      <td>{{ stock.price|currency }}</td>
-	    </tr>
-	  {% endfor %}
-	</tbody>
-      </table>
-    </div>
-    <hr>
-  {% endfor %}
+{% for product in products %}
+<h3>{{ product.name }}</h3>
+<p>{{ product.description }}</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Παραγωγός</th>
+      <th>Ποικιλία</th>
+      <th>Περιγραφή</th>
+      <th>Τιμή ανά {{ product.unit.name }}</th>
+      <th></th>
+  </thead>
+  <tbody>
+    {% for stock in product.stocks.all %}
+    <tr>
+      <td>{{ stock.producer.get_full_name }}</td>
+      <td>{{ stock.variety }}</td>
+      <td>{{ stock.description }}</td>
+      <td>{{ stock.price|currency }}</td>
+      <td>
+	<form method="post" action="{% url 'cart-add' %}">
+	  {% csrf_token %}
+	  <input type="hidden" name="stock_id" value="{{ stock.id }}">
+	  <input type="submit" value="καλάθι">
+	</form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<hr>
+{% endfor %}
 {% endblock %}

@@ -34,7 +34,7 @@ class ProductStockAdmin(ModelAdmin):
     list_display = ('product', 'producer', 'quantity', 'price')
 
 
-@admin.register(csa.models.core.Producer)
+@admin.register(csa.models.user.Producer)
 class Producer(ModelAdmin):
     inlines = [UserProfileInline]
     list_display = (
@@ -42,7 +42,7 @@ class Producer(ModelAdmin):
         'profile__phone_number',
         'profile__user__email')
 
-@admin.register(csa.models.core.Consumer)
+@admin.register(csa.models.user.Consumer)
 class Consumer(ModelAdmin):
     inlines = [UserProfileInline]
     actions = ['deposit_by_hand']
